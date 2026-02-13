@@ -1,6 +1,4 @@
 # Learning-Tracker-Tool
-
-# Full Stack + Gen AI
 ## Minimum Viable Product(MVP)
 ### Data model (simple, scalable)
 - `Language` (JavaScript, Python, Rust…)
@@ -42,3 +40,37 @@
 - *Tool decisions for the AI feature (keep it simple)*: Vector store: start with Postgres, not Pinecone. Your earlier stack already includes **Neon Postgres**. So instead of adding Pinecone, you can store vectors in Postgres (pgvector) and keep one database.
 	- Why this matters: fewer services = less confusion. If later you need huge scale, you can switch to Pinecone. For your sprint, one DB wins.
 	- *Streaming chat Vercel AI SDK*: Your summary called it “Versa AI SDK,” but what’s widely used in Next.js is **Vercel AI SDK** with `useChat` + server-side streaming helpers. [AI SDK+2Vercel+2](https://ai-sdk.dev/cookbook/next/stream-text-with-chat-prompt?utm_source=chatgpt.com)
+## Videos to follow
+### [Codebox-style fullstack SaaS](https://youtu.be/rdaSPdCkoFQ?si=Zt9YNRQzVVUIUQZI)
+**Follow it for:**
+1. **Auth + protected routes (copy pattern, not UI)**: Clerk login + middleware-protected routes is a great “ship fast” move and looks legit on resume. 
+2. **Postgres + ORM + schema relationships**: Neon Postgres + a typed ORM is perfect for your tracker (users → goals/topics → sessions → recaps). If the video uses *Drizzle*, that’s fine; if you prefer Prisma, also fine. The important part is **relational modeling + migrations + clean queries**.
+	- (Neon + Clerk + Drizzle is a known combo and even has example repos you can reference.) [GitHub+1](https://github.com/raoufchebri/neon-clerk-drizzle-nextjs?utm_source=chatgpt.com)
+3. **Progress tracking, streaks, XP (gamification-lite)**: For Learning Tracker, keep this minimal:
+	- streak = “days with ≥1 session”
+	- XP = minutes or session count
+	- weekly chart = minutes/day
+4. **Deployment discipline**: The “deploy with env vars + verify local build” workflow is exactly what makes your project look real.
+**Skip:**
+- billing/subscriptions
+- code editor playground
+- anything “SaaS monetization” (excess for sprint)
+### ["Chat with PDF” SaaS (Elliot)](https://youtu.be/bZFedu-0emE?si=uKTI6QTVs7aQyoiD)
+**Follow it for:**
+- the RAG pipeline architecture: chunk → embed → retrieve → answer
+- streaming chat UI structure
+- message persistence patterns(so chats are saved per user / per lesson or per language)
+- **Auth-protected routes** (Clerk pattern)
+That video is literally the “RAG app wiring” pattern in Next.js.
+**Don’t follow literally:**
+- S3 uploads (not needed unless users upload PDFs)
+- Pinecone (skip for MVP; use pgvector in Neon instead)
+- Stripe subscriptions (skip)
+### [Semantic search repo (dabit3)](https://youtu.be/6_mfYPPcZ60?si=-mS8ykz2lDNrTEUk)
+**Use it as a reference** (not a “follow along”):
+- chunking best practices
+- simple indexing workflow (load docs → embed → upsert vectors)
+- query workflow (embed query → similarity search → feed to LLM)
+It’s a clean “minimum viable semantic search” reference. [GitHub](https://github.com/dabit3/semantic-search-nextjs-pinecone-langchain-chatgpt?utm_source=chatgpt.com)
+**Do NOT follow**:
+- treating this like a separate app; you’re embedding this inside your Learning Tracker, not building a standalone demo.
