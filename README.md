@@ -74,3 +74,37 @@ That video is literally the “RAG app wiring” pattern in Next.js.
 It’s a clean “minimum viable semantic search” reference. [GitHub](https://github.com/dabit3/semantic-search-nextjs-pinecone-langchain-chatgpt?utm_source=chatgpt.com)
 **Do NOT follow**:
 - treating this like a separate app; you’re embedding this inside your Learning Tracker, not building a standalone demo.
+## Github Workflow
+Rule 1: main is protected (conceptually)
+- Nobody commits directly to main
+- Only PRs go into main
+Rule 2: one task = one branch
+Examples:
+- feature/auth-clerk
+- feature/db-schema
+- fix/readme
+Rule 3: always start from latest main
+- Before starting a task:
+  - git switch main
+  - git pull origin main
+  - git switch -c feature/<task-name>
+Rule 4: commit locally, push branch, open PR
+- git add .
+- git commit -m "Describe change"
+- git push -u origin HEAD
+Then open PR on GitHub → base: main
+Rule 5: review + merge, then clean up
+- After PR merge:
+  - git switch main
+  - git pull origin main
+  - git branch -d feature/<task-name>
+  - git push origin --delete feature/<task-name>
+How you both work at the same time without stepping on each other
+You pick different tasks.
+Each task is on a separate branch.
+If both need to touch the same file, you coordinate or one rebases.
+If your branch falls behind:
+- git fetch origin
+- git rebase origin/main
+fix conflicts if any
+- git push --force-with-lease
